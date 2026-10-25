@@ -1,0 +1,41 @@
+// Prisma Schema for MiniLedger
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LoanStatus {
+  PENDING
+  REPAID
+}
+
+model User {
+  id           String      @id @default(uuid())
+  phoneNumber  String      @unique @map("phone_number")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  loans        LoanEntry[]
+
+  @@map("users")
+}
+
+model LoanEntry {
+  id         String     @id @default(uuid())
+  userId     String     @map("user_id")
+  friendName String     @map("friend_name")
+  amount     Float
+  dueDate    DateTime   @map("due_date")
+  status     LoanStatus @default(PENDING)
+  receiptUrl String?    @map("receipt_url")
+  createdAt  DateTime   @default(now()) @map("created_at")
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([dueDate, status])
+  @@map("loan_entries")
+}

@@ -1,0 +1,13 @@
+{
+  "name": "miniledger-monorepo",
+  "version": "1.0.0",
+  "description": "MiniLedger - Track money lent to friends",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run web",
+    "dev": "npm run dev:backend",
+    "test": "cd backend && npm test",
+    "prisma:push": "cd backend && npx prisma db push",
+    "prisma:studio": "cd backend && npx prisma studio"
+  }
+}
